@@ -23,6 +23,9 @@ class ItemCell: UITableViewCell {
         title.text = item.title
         price.text = "$\(item.price)"
         details.text = item.details
-        thumbnail.image = item.toImage?.image as? UIImage
+        if (item.toImage != nil) {
+            let dataDecoded : Data = Data(base64Encoded: (item.toImage?.image)!, options: .ignoreUnknownCharacters)!
+            thumbnail.image = UIImage.init(data: dataDecoded)
+        }
     }
 }

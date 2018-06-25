@@ -46,23 +46,23 @@ class ItemDetailsVC: UIViewController, UIPickerViewDataSource, UIPickerViewDeleg
         let count = fetchStoreCount()
         if count == 0 {
             
-            let store1 = Store(context: context)
+            let store1 = Store(context: context!)
             store1.name = "Best Buy"
-            let store2 = Store(context: context)
+            let store2 = Store(context: context!)
             store2.name = "Amazon"
-            let store3 = Store(context: context)
+            let store3 = Store(context: context!)
             store3.name = "Walmart"
-            let store4 = Store(context: context)
+            let store4 = Store(context: context!)
             store4.name = "Carrefour"
-            let store5 = Store(context: context)
+            let store5 = Store(context: context!)
             store5.name = "Home Depot"
-            let store6 = Store(context: context)
+            let store6 = Store(context: context!)
             store6.name = "Target"
-            let store7 = Store(context: context)
+            let store7 = Store(context: context!)
             store7.name = "K Mart"
-            let store8 = Store(context: context)
+            let store8 = Store(context: context!)
             store8.name = "Tesco"
-            let store9 = Store(context: context)
+            let store9 = Store(context: context!)
             store9.name = "Marks & Spencer"
             
             ad.saveContext()
@@ -103,7 +103,7 @@ class ItemDetailsVC: UIViewController, UIPickerViewDataSource, UIPickerViewDeleg
         let fetchRequest: NSFetchRequest<Store> = Store.fetchRequest()
         
         do {
-            self.stores = try context.fetch(fetchRequest)
+            self.stores = (try context?.fetch(fetchRequest))!
             self.storePicker.reloadAllComponents()
             
         } catch {
@@ -117,9 +117,9 @@ class ItemDetailsVC: UIViewController, UIPickerViewDataSource, UIPickerViewDeleg
         let fetchRequest: NSFetchRequest<Store> = Store.fetchRequest()
         
         do {
-            let count = try context.count(for: fetchRequest)
+            let count = try context?.count(for: fetchRequest)
             print("Current Store Data Count : \(count)")
-            return count
+            return count!
         } catch let err as NSError {
             print(err.description)
             return 0
@@ -130,14 +130,16 @@ class ItemDetailsVC: UIViewController, UIPickerViewDataSource, UIPickerViewDeleg
     @IBAction func savePressed(_ sender: UIButton) {
         
         var item: Item!
-        let picture = Image(context: context)
+        let picture = Image(context: context!)
         
-        picture.image = thumbImg.image
+        let imageData:Data = UIImagePNGRepresentation(thumbImg.image!)!
+        let strBase64:String = imageData.base64EncodedString(options: Data.Base64EncodingOptions.lineLength64Characters)
+        picture.image = strBase64
         
         //If creating a new entry
         if itemToEdit == nil {
             
-            item = Item(context: context)
+            item = Item(context: context!)
         
         //If modifying an existing entry
         } else {
@@ -173,7 +175,7 @@ class ItemDetailsVC: UIViewController, UIPickerViewDataSource, UIPickerViewDeleg
         
         if itemToEdit != nil {
             
-            context.delete(itemToEdit!)
+            context?.delete(itemToEdit!)
             
             ad.saveContext()
         }
@@ -196,7 +198,8 @@ class ItemDetailsVC: UIViewController, UIPickerViewDataSource, UIPickerViewDeleg
             priceField.text = "\(item.price)"
             detailsField.text = item.details
             
-            thumbImg.image = item.toImage?.image as? UIImage
+            let dataDecoded : Data = Data(base64Encoded: (item.toImage?.image)!, options: .ignoreUnknownCharacters)!
+            thumbImg.image = UIImage.init(data: dataDecoded)
             
             if let store = item.toStore {
                 
@@ -227,10 +230,36 @@ class ItemDetailsVC: UIViewController, UIPickerViewDataSource, UIPickerViewDeleg
         
         if let img = info[UIImagePickerControllerOriginalImage] as? UIImage {
             
-            thumbImg.image = img
+            thumbImg.image = resizeImage(image: img, targetSize: CGSize.init(width: 200, height: 200))
         }
         
         imagePicker.dismiss(animated: true, completion: nil)
+    }
+    
+    func resizeImage(image: UIImage, targetSize: CGSize) -> UIImage {
+        let size = image.size
+        
+        let widthRatio  = targetSize.width  / size.width
+        let heightRatio = targetSize.height / size.height
+        
+        // Figure out what our orientation is, and use that to form the rectangle
+        var newSize: CGSize
+        if(widthRatio > heightRatio) {
+            newSize = CGSize.init(width: size.width * heightRatio, height: size.height * heightRatio)
+        } else {
+            newSize = CGSize.init(width: size.width * widthRatio,  height: size.height * widthRatio)
+        }
+        
+        // This is the rect that we've calculated out and this is what is actually used below
+        let rect = CGRect.init(x: 0, y: 0, width: newSize.width, height: newSize.height)
+        
+        // Actually do the resizing to the rect using the ImageContext stuff
+        UIGraphicsBeginImageContextWithOptions(newSize, false, 1.0)
+        image.draw(in:rect)
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return newImage!
     }
     
     

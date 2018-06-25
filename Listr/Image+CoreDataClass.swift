@@ -8,8 +8,9 @@
 
 import Foundation
 import CoreData
+import Simperium.SPManagedObject
 
 
-public class Image: NSManagedObject {
+public class Image: SPManagedObject {
 
 }

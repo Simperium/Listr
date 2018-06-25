@@ -1,0 +1,22 @@
+PODS:
+  - Simperium (0.8.19):
+    - Simperium/DiffMatchPach (= 0.8.19)
+    - Simperium/JRSwizzle (= 0.8.19)
+    - Simperium/SocketTrust (= 0.8.19)
+    - Simperium/SPReachability (= 0.8.19)
+    - Simperium/SSKeychain (= 0.8.19)
+  - Simperium/DiffMatchPach (0.8.19)
+  - Simperium/JRSwizzle (0.8.19)
+  - Simperium/SocketTrust (0.8.19)
+  - Simperium/SPReachability (0.8.19)
+  - Simperium/SSKeychain (0.8.19)
+
+DEPENDENCIES:
+  - Simperium (= 0.8.19)
+
+SPEC CHECKSUMS:
+  Simperium: f72ecf0b5c6e9e4b70be9f575c7d88e7de7b112c
+
+PODFILE CHECKSUM: 53a595f3809f7fa1c068346e8af2f4f58516e345
+
+COCOAPODS: 1.3.1

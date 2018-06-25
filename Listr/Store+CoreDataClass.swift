@@ -8,8 +8,9 @@
 
 import Foundation
 import CoreData
+import Simperium.SPManagedObject
 
 
-public class Store: NSManagedObject {
+public class Store: SPManagedObject {
 
 }

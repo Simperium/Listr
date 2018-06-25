@@ -119,7 +119,7 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource, NSFe
         }
     
         
-        let controller = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+        let controller = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context!, sectionNameKeyPath: nil, cacheName: nil)
         
         //in order for methods below to work
         controller.delegate = self
@@ -189,17 +189,17 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource, NSFe
     
     func generateTestData() {
         
-        let item1 = Item(context: context)
+        let item1 = Item(context: context!)
         item1.title = "MacBook Pro"
         item1.price = 1800
         item1.details = "I can't wait until the September event, I hope they release the new MBPs"
         
-        let item2 = Item(context: context)
+        let item2 = Item(context: context!)
         item2.title = "Tesla Model S"
         item2.price = 110000
         item2.details = "Oh man, this is a beautiful car. One day I will have it."
         
-        let item3 = Item(context: context)
+        let item3 = Item(context: context!)
         item3.title = "Bose Headphones"
         item3.price = 400
         item3.details = "Man! Its damn great to have those noise cancelling headphones"

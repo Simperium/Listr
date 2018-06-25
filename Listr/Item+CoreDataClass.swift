@@ -8,9 +8,10 @@
 
 import Foundation
 import CoreData
+import Simperium.SPManagedObject
 
 
-public class Item: NSManagedObject {
+public class Item: SPManagedObject {
 
     public override func awakeFromInsert() {
         super.awakeFromInsert()
